@@ -1,0 +1,145 @@
+version: "2.0"
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+    - good afternnon
+    - hello, you're talking with [Juan](user_name)
+    - hey, it's [Sara](user_name)
+    - hi there, it's [Sam](user_name)
+- intent: goodbye
+  examples: |
+    - good afternoon
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+    - i am great
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+- intent: ask_for_table_reservation
+  examples: |
+    - i want to make a [reservation](booking)
+    - Can i make a [reservation](booking) for [today](date)?
+    - i want to book a [table](table)
+    - i wanna book a [table](table)
+    - wanna book a [table](table)
+    - i would like to reserve a [table](table)
+    - i'd like to book a [table](table)
+    - i'd like to reserve a [table](table)
+    - can u book a [table](table) for me please?
+    - is there a [table](table) available?
+    - do you have [tables](table) availables?
+    - i wan to book a [table](table)
+    - i wanna book a [table](table)
+- intent: ask_for_location
+  examples: |
+    - where is the [restaurant](place) located?
+    - can u give me the [address](location) please
+    - give me the [address](location)
+    - send me the [restaurant](place) [location](location) please
+    - send [location](location)
+- intent: send_date
+  examples: |
+    - it's for [tomorrow](date) at [9 pm](time)
+    - for [today](date) at [10pm](time)
+    - the [reservation](booking) is for [today](date) at [5pm](time)
+    - the [reservation](booking) is for the [next friday](date) at [6pm](time)
+    - it's for [tomorrow](date)
+    - [tomorrow](date)
+- intent: send_time
+  examples: |
+    - for at [9 pm](time)
+    - for [today](date) at [10pm](time)
+    - the [reservation](booking) is for [5pm](time)
+    - the [reservation](booking) at [6pm](time)
+    - it's a [9pm](time)
+    - it's at [9pm](time)
+    - at [8pm](time)
+- intent: send_number_of_people
+  examples: |
+    - We are [2 people](people)
+    - Just for [me and my girlfriend](people)
+    - For [2 people](people) please
+    - [3 people](people) please
+    - [2 people](people) please
+    - it's for [3 people](people)
+- intent: send_name
+  examples: |
+    - my name is [Israel](user_name)
+    - i am [Gina](user_name)
+    - i'm [Paul](user_name)
+    - i am [Juan](user_name)
+    - i am [juan](user_name)
+    - I am [Juan](user_name)

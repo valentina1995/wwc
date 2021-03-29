@@ -1,0 +1,105 @@
+version: "2.0"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+- story: table reservation happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_for_location
+  - action: utter_send_location
+  - intent: ask_for_table_reservation
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - active_loop: null
+  - action: utter_successfull_reservation_was_made
+  - action: utter_goodbye
+
+- story: table reservation with user name mood great
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_how_are_you
+  - intent: mood_great
+  - action: utter_happy
+  - action: utter_offer_help
+  - intent: ask_for_table_reservation
+  - action: utter_ask_user_name
+  - intent: send_name
+  - slot_was_set:
+    - user_name
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - active_loop: null
+  - action: action_make_reservation
+  - action: utter_successfull_reservation_was_made
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_goodbye
+
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_how_are_you
+  - intent: mood_great
+  - action: utter_happy
+  - action: utter_offer_help
+  - intent: ask_for_table_reservation
+    entities:
+    - table: table
+  - action: utter_ask_user_name
+  - intent: send_name
+    entities:
+    - user_name: Juan
+  - slot_was_set:
+    - user_name: Juan
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - slot_was_set:
+    - requested_slot: reservation_date
+  - slot_was_set:
+    - reservation_date: tomorrow
+  - slot_was_set:
+    - requested_slot: reservation_time
+  - slot_was_set:
+    - reservation_time: 8pm
+  - slot_was_set:
+    - requested_slot: reservation_people
+  - slot_was_set:
+    - reservation_people: 3 people
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_make_reservation
+  - action: utter_successfull_reservation_was_made
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_goodbye

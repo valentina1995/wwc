@@ -1,0 +1,119 @@
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- ask_for_table_reservation
+- send_name
+- send_date
+- mood_great
+- send_number_of_people
+- affirm
+- greet
+- send_time
+- goodbye
+- deny
+- mood_unhappy
+- bot_challenge
+- ask_for_location
+entities:
+- booking
+- date
+- friday
+- location
+- midnight
+- monday
+- noon
+- people
+- person
+- place
+- reservation
+- saturday
+- sunday
+- table
+- thursday
+- time
+- tuesday
+- user_name
+- wednesday
+slots:
+  reservation_date:
+    type: text
+    influence_conversation: true
+  reservation_time:
+    type: text
+    influence_conversation: true
+  reservation_people:
+    type: text
+    influence_conversation: true
+  user_name:
+    type: text
+    influence_conversation: true
+responses:
+  utter_greet:
+  - text: Hey!
+  - text: Hello! Thanks for getting in touch with us.
+  utter_how_are_you:
+  - text: How are you?
+  - text: How is it going?
+  utter_offer_help:
+  - text: What can i do for you today?
+  - text: Tell me what i'm good for!!
+  utter_ask_user_name:
+  - text: Can you give me your name please?
+  - text: Who do i have the pleasure to talk with?
+  utter_cheer_up:
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  - text: Awesome!!
+  utter_goodbye:
+  - text: That would be all! Bye
+  - text: Bye bye! Have a good day
+  - text: That would be all! See you soon!
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_send_location:
+  - text: You can find us on here
+  - text: Alright! This is our location here
+  utter_ask_restaurant_form_reservation_time:
+  - text: Cool!, give me the time you want to book the table
+  - text: Sure, give me the time
+  - text: Can you give me the time for the reservation please?
+  utter_ask_restaurant_form_reservation_date:
+  - text: Alright!, give me the date you want to book the table
+  - text: Sure, give me the date
+  - text: Can you give me the date for the reservation?
+  utter_ask_restaurant_form_reservation_people:
+  - text: Alright, last question. Who many people is the reservation for?
+  - text: Great. Give me the number of people please
+  utter_successfull_reservation_was_made:
+  - text: "Great! you reservation has been book. The details are listed below:\n 
+          Reservation Date: {reservation_date}\n
+          Reservation Time: {reservation_time}\n
+          Number of People: {reservation_people}\n"
+actions:
+- utter_ask_user_name
+- utter_did_that_help
+- utter_goodbye
+- utter_greet
+- utter_happy
+- utter_how_are_you
+- utter_offer_help
+- utter_successfull_reservation_was_made
+- action_make_reservation
+
+forms:
+  restaurant_form:
+    reservation_date:
+    - type: from_entity
+      entity: date
+    reservation_time:
+    - type: from_entity
+      entity: time
+    reservation_people:
+    - type: from_entity
+      entity: people
