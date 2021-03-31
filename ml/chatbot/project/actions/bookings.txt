@@ -1,2 +1,7 @@
 {"date": "friday", "time": "7pm", "people": "me and my girldfriend"}
 {"date": "friday", "time": "9pm", "people": "me and my girlfriend"}
+{"date": "tomorrow", "time": "7pm", "people": "3 people"}
+{"date": "tomorrow", "time": "9pm", "people": "3 people"}
+{"date": "friday", "time": "8pm", "people": 3}
+{"date": "tomorrow", "time": "8pm", "people": 4}
+{"date": "Tomorrow", "time": "8pm", "people": 3}

@@ -105,6 +105,7 @@ actions:
 - utter_offer_help
 - utter_successfull_reservation_was_made
 - action_make_reservation
+- validate_restaurant_form
 
 forms:
   restaurant_form:
