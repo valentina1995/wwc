@@ -3,29 +3,29 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- ask_for_table_reservation
-- send_name
-- send_date
-- mood_great
-- send_number_of_people
 - affirm
+- ask_for_location
 - greet
-- send_time
+- ask_for_table_reservation
+- inform
+- mood_great
 - goodbye
 - deny
 - mood_unhappy
 - bot_challenge
-- ask_for_location
+- out_of_scope
 entities:
 - booking
 - date
 - friday
+- identification
 - location
 - midnight
 - monday
 - noon
 - people
 - person
+- phone_number
 - place
 - reservation
 - saturday
@@ -49,19 +49,23 @@ slots:
   user_name:
     type: text
     influence_conversation: true
+  identification:
+    type: text
+    influence_conversation: true
+  phone_number:
+    type: text
+    influence_conversation: true
 responses:
   utter_greet:
   - text: Hey!
   - text: Hello! Thanks for getting in touch with us.
+  - text: Howdy!
   utter_how_are_you:
   - text: How are you?
   - text: How is it going?
   utter_offer_help:
   - text: What can i do for you today?
   - text: Tell me what i'm good for!!
-  utter_ask_user_name:
-  - text: Can you give me your name please?
-  - text: Who do i have the pleasure to talk with?
   utter_cheer_up:
   - text: 'Here is something to cheer you up:'
     image: https://i.imgur.com/nGF1K8f.jpg
@@ -79,36 +83,63 @@ responses:
   utter_send_location:
   - text: You can find us on here
   - text: Alright! This is our location here
+  utter_ask_continue:
+  - text: Sorry, I don't quite understand. Do you want to continue?
   utter_ask_restaurant_form_reservation_time:
   - text: Cool!, give me the time you want to book the table
   - text: Sure, give me the time
   - text: Can you give me the time for the reservation please?
   utter_ask_restaurant_form_reservation_date:
-  - text: Alright!, give me the date you want to book the table
-  - text: Sure, give me the date
+  - text: Give me the date you want to book the table
+  - text: give me the date
+  - text: tell me wich is the day you want to make the reservation
   - text: Can you give me the date for the reservation?
   utter_ask_restaurant_form_reservation_people:
-  - text: Alright, last question. Who many people is the reservation for?
+  - text: Who many people is the reservation for?
   - text: Great. Give me the number of people please
+  - text: How many sits do you need?
+  utter_ask_restaurant_form_user_name:
+  - text: Can you give me your name please?
+  - text: Who do i have the pleasure to talk with?
+  utter_ask_restaurant_form_identification:
+  - text: Give me your personal ID please
+  - text: Can you type your ID please
+  - text: send me your id please
+  utter_ask_restaurant_form_phone_number:
+  - text: Can you send me a contact number? We will use it to remaind you about the reservation and/or sending valuable information if something unexpected happens.
   utter_successfull_reservation_was_made:
-  - text: "Great! you reservation has been book. The details are listed below:\n 
-          Reservation Date: {reservation_date}\n
-          Reservation Time: {reservation_time}\n
-          Number of People: {reservation_people}\n"
+  - text: |-
+      Great! you reservation has been book. The details are listed below:
+       Name: {user_name}
+       Identification: {identification}
+       Contact Number: {phone_number}
+       Reservation Date: {reservation_date}
+       Reservation Time: {reservation_time}
+       Number of People: {reservation_people}
+       Remember you should be in the restaurant 10 minutes earlier!
+  utter_ask_for_affirm:
+  - text: Is this correct?
+  - text: Is this fine?
 actions:
-- utter_ask_user_name
+- action_make_reservation
+- utter_cheer_up
 - utter_did_that_help
 - utter_goodbye
 - utter_greet
 - utter_happy
 - utter_how_are_you
 - utter_offer_help
+- utter_send_location
 - utter_successfull_reservation_was_made
-- action_make_reservation
 - validate_restaurant_form
-
 forms:
   restaurant_form:
+    user_name:
+    - type: from_entity
+      entity: user_name
+    identification:
+    - type: from_entity
+      entity: identification
     reservation_date:
     - type: from_entity
       entity: date
@@ -118,3 +149,6 @@ forms:
     reservation_people:
     - type: from_entity
       entity: people
+    phone_number:
+    - type: from_entity
+      entity: phone_number

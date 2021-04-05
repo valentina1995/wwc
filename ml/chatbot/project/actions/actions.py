@@ -6,8 +6,15 @@
 
 
 # This is a simple example for a custom action which utters "Hello World!"
-import pathlib
+import logging
+
+logger = logging.getLogger(__name__)
+
+import datetime
 import json
+import pathlib
+import uuid
+
 from typing import Any, Text, Dict, List, Union
 from rasa_sdk.types import DomainDict
 from rasa_sdk import Tracker, Action, FormValidationAction
@@ -15,14 +22,25 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 
 
-path = '/Users/juan.valencia/Documents/workspace/gorilla/wwc/ml/chatbot/project/actions/bookings.txt'
-def save(data: Dict[Text, Any]) -> None:
-    data = json.dumps(data) + '\n'
-    with open(path, "r") as f:
-        file_data = f.read()
-    data = file_data + data
-    with open(path, "w") as f:
-        f.write(data)
+from db import (
+    db_connect, create_table, get_cursor,
+    create_reservation, table_exists,
+    reservation_config)
+
+con = db_connect()
+cur = get_cursor(con)
+
+def save(data: tuple) -> None:
+    if not table_exists(cur, 'reservations'):
+        create_table(cur, 'reservations', reservation_config)
+    try:
+        create_reservation(cur, data)
+        con.commit()
+    except Exception as e:
+        con.rollback()
+        logger.warning(f"Rolling back: {str(e)}")
+    else:
+        logger.info('Transaction saved')
 
 
 class MakeReservationAction(Action):
@@ -36,16 +54,64 @@ class MakeReservationAction(Action):
         domain: Dict[Text, Any]
     ) -> List[Dict]:
         
+        user = tracker.get_slot('user_name')
+        identification = tracker.get_slot('identification')
+        number = tracker.get_slot('phone_number')
         date = tracker.get_slot('reservation_date')
         time = tracker.get_slot('reservation_time')
         people = tracker.get_slot('reservation_people')
-        save({'date': date, 'time': time, 'people': people})
+        save((str(uuid.uuid1()), user, identification, number, date, time, people))
         return [ActionExecuted(self.name())]
 
 
 class ValidateReservationForm(FormValidationAction):
     def name(self):
         return "validate_restaurant_form"
+
+    def validate_user_name(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict
+    ) -> Dict[Text, Any]:
+        """Validate reservation user name value"""
+        if len(slot_value) < 3:
+            dispatcher.utter_message(text=f"That is a very short name, i think you misspell it ")
+            return {'user_name': None}
+        return {'user_name': slot_value}
+
+    def validate_identification(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict
+    ) -> Dict[Text, Any]:
+        """Validate reservation identification value"""
+        if len(slot_value) <= 6:
+            dispatcher.utter_message(text=f"That is a short ID :(")
+            return {'identification': None}
+        elif '.' not in slot_value:
+            dispatcher.utter_message(text=f"You should send your ID number with dot separator")
+        return {'identification': slot_value}
+
+    def validate_phone_number(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict
+    ) -> Dict[Text, Any]:
+        """Validate phone_number value"""
+        if len(slot_value) <= 5:
+            dispatcher.utter_message(text=f"That is a short phone number :(")
+            return {'identification': None}
+
+        if '.' in slot_value:
+            dispatcher.utter_message(text=f"Could you please send the phone number withot dots please?")
+            return {'identification': None}      
+        return {'phone_number': slot_value}
 
     def validate_reservation_date(
         self,
@@ -55,7 +121,7 @@ class ValidateReservationForm(FormValidationAction):
         domain: DomainDict
     ) -> Dict[Text, Any]:
         """Validate reservation date value"""
-        pass
+        return {'reservation_date': slot_value}
 
     def validate_reservation_time(
         self,
@@ -65,7 +131,7 @@ class ValidateReservationForm(FormValidationAction):
         domain: DomainDict
     ) -> Dict[Text, Any]:
         """Validate reservation time value"""
-        pass
+        return {'reservation_time': slot_value}
 
     def validate_reservation_people(
         self,
@@ -75,13 +141,7 @@ class ValidateReservationForm(FormValidationAction):
         domain: DomainDict
     ) -> Dict[Text, Any]:
         """Validate reservation people value"""
-        slot_pieces = slot_value.split()
-        for piece in slot_pieces:
-            try:
-                num_people = int(piece)
-            except ValueError as e:
-                num_people = None
-        if not num_people:
-            dispatcher.utter_message(text=f"It would be better for me if you just say how many people wil be sited in the table")
-            return {'reservation_people': None}
-        return {'reservation_people': num_people}
+        #if not num_people:
+        #    dispatcher.utter_message(text=f"It would be better for me if you just say how many people wil be sited in the table")
+        #    return {'reservation_people': None}
+        return {'reservation_people': slot_value}

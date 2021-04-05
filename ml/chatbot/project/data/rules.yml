@@ -11,3 +11,8 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Send restaurant location
+  steps:
+  - intent: ask_for_location
+  - action: utter_send_location

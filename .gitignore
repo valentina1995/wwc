@@ -2,3 +2,5 @@ __pycache*
 *pycache
 venv*
 /chatbot
+ml/chatbot/project/restaurant.db
+*.dot
