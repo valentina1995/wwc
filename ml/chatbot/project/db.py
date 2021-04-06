@@ -51,7 +51,7 @@ def table_exists(cursor, table_name:str):
     if not tables:
         return False
     for t in tables:
-        if t == table_name:
+        if t[0] == table_name:
             return True
     return False
 

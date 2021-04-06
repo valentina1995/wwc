@@ -1,6 +1,8 @@
 __pycache*
 *pycache
+story_graph*
 venv*
-/chatbot
 ml/chatbot/project/restaurant.db
 *.dot
+ml/chatbot/project/models*
+ml/chatbot/project/story_graph*
