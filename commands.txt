@@ -1,0 +1,28 @@
+# Docker
+
+Creating an Image
+- docker image build --file Dockerfile -t wwc-platform:1.1 .
+
+Connecting to container shell
+- docker exec -it wwc-ml-1.1 bash
+
+
+# Anaconda
+
+List conda virtual environments
+- conda env list
+
+Deactivating a conda environment
+- conda deactivate
+
+Activating a conda environment
+- source activate nlp_course
+
+Listing packages
+- conda list
+
+Creating requirements.txt in conda
+- conda list -e > requirements.txt
+
+Install package 
+- conda install PACKAGENAME
