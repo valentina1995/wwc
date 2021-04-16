@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  wwc-ml:
+    build: .
+    image: wwc-platform:1.1
+    container_name: wwc-ml-1.1
+    #container_name: wwc-ml
+    ports:
+      - "8888:8888"
+    volumes:
+      - /Users/juan.valencia/Documents/workspace/gorilla/wwc/ml/nlp:/usr/src/wwc/ml/nlp
+#      - /Users/juan.valencia/Documents/workspace/gorilla/wwc/platform-setup/notebooks:/usr/src/app/notebooks
+#      - wwc-ml-notebooks:/usr/src/app/notebooks
+
+#volumes:
+#  wwc-ml-notebooks:

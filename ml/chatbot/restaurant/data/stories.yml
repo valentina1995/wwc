@@ -1,0 +1,127 @@
+version: "2.0"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+- story: table reservation happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_how_are_you
+  - intent: mood_great
+  - action: utter_cheer_up
+  - action: utter_offer_help
+  - intent: ask_for_table_reservation
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - active_loop: null
+  - action: action_make_reservation
+  - action: utter_successfull_reservation_was_made
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_goodbye
+  - action: action_restart
+
+- story: happy path with a out of scope message
+  steps:
+  - intent: ask_for_table_reservation
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - intent: out_of_scope
+  - action: utter_ask_continue
+  - intent: affirm
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - active_loop: null
+  - action: action_make_reservation
+  - action: utter_successfull_reservation_was_made
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_goodbye
+  - action: action_restart
+
+- story: out of scope unhappy path
+  steps:
+  - intent: ask_for_table_reservation
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - intent: out_of_scope
+  - action: utter_ask_continue
+  - intent: deny
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_goodbye
+  - action: action_restart
+
+- story: interactive_story_1_happy_path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_how_are_you
+  - intent: mood_great
+  - action: utter_cheer_up
+  - action: utter_offer_help
+  - intent: ask_for_table_reservation
+    entities:
+    - table: table
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - slot_was_set:
+    - requested_slot: user_name
+  - slot_was_set:
+    - user_name: juan camilo
+  - slot_was_set:
+    - requested_slot: identification
+  - slot_was_set:
+    - identification: '1.144.076.879'
+  - slot_was_set:
+    - requested_slot: reservation_date
+  - slot_was_set:
+    - reservation_date: tomorrow
+  - slot_was_set:
+    - requested_slot: reservation_time
+  - slot_was_set:
+    - reservation_time: 9pm
+  - slot_was_set:
+    - requested_slot: reservation_people
+  - slot_was_set:
+    - reservation_people: 3 people
+  - slot_was_set:
+    - requested_slot: phone_number
+  - slot_was_set:
+    - phone_number: '31192571751'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_make_reservation
+  - action: utter_successfull_reservation_was_made
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_goodbye
+  - action: action_restart
