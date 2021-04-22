@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  webapp:
+    image: webapp:0.1.0
+    container_name: webapp
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./ml/nlp:/usr/src/wwc/ml/nlp
+    depends_on: 
+      - rasa-server
+      - rasa-action-server
+  rasa-server:
+    container_name: rasa-server
+    image: rasa/rasa:2.5.0
+    ports:
+      - 5005:5005
+    volumes: 
+      - ./ml/chatbot/restaurant:/app
+    command:
+      - run
+      - --cors
+      - "*"
+      - --enable-api
+      - --log-file
+      - out.log
+    depends_on: 
+      - rasa-action-server
+  rasa-action-server:
+    container_name: rasa-action-server
+    image: rasa/rasa-sdk:2.5.0
+    ports:
+      - 5055:5055
+    volumes:
+      - ${PWD}/ml/chatbot/restaurant/actions:/app/actions
+      - ${PWD}/db.py:/app/db.py
+  

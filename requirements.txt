@@ -97,8 +97,8 @@ python-socketio==5.1.0
 pytz==2020.5
 PyYAML==5.4.1
 questionary==1.5.2
-rasa==2.4.3
-rasa-sdk==2.4.1
+rasa==2.5.0
+rasa-sdk==2.5.0
 redis==3.5.3
 regex==2020.9.27
 requests==2.25.1

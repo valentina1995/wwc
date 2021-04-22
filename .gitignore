@@ -7,3 +7,4 @@ ml/chatbot/restaurant/restaurant.db
 ml/chatbot/restaurant/models*
 ml/chatbot/restaurant/story_graph*
 .DS_Store
+out.log*
