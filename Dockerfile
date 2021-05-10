@@ -15,6 +15,7 @@ RUN /bin/bash -c "source activate nlp_course"
 # Make RUN commands use the new environment
 SHELL ["conda", "run", "-n", "nlp_course", "/bin/bash", "-c"]
 
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN python -m spacy download en_core_web_sm
 RUN python -m spacy download en_core_web_lg
